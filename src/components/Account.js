@@ -3,24 +3,24 @@ import AccountForm from "./AccountForm";
 import firebaseDb from "../firebase";
 import Navbar from "./Navbar";
 
-const Contacts = () => {
+const Account = () => {
   var [contactObjects, setContactObjects] = useState({});
   var [currentId, setCurrentId] = useState("");
 
   useEffect(() => {
-    firebaseDb.child("contacts").on("value", (snapshot) => {
+    firebaseDb.child("accounts").on("value", (snapshot) => {
       if (snapshot.val() != null) setContactObjects({ ...snapshot.val() });
       else setContactObjects({});
     });
   }, []);
   const addOrEdit = (obj) => {
     if (currentId == "")
-      firebaseDb.child("contacts").push(obj, (err) => {
+      firebaseDb.child("accounts").push(obj, (err) => {
         if (err) console.log(err);
         else setCurrentId("");
       });
     else
-      firebaseDb.child(`contacts/${currentId}`).set(obj, (err) => {
+      firebaseDb.child(`accounts/${currentId}`).set(obj, (err) => {
         if (err) console.log(err);
         else setCurrentId("");
       });
@@ -28,7 +28,7 @@ const Contacts = () => {
 
   const onDelete = (key) => {
     if (window.confirm("Are you sure to delete")) {
-      firebaseDb.child(`contacts/${key}`).remove((err) => {
+      firebaseDb.child(`accounts/${key}`).remove((err) => {
         if (err) console.log(err);
         else setCurrentId("");
       });
@@ -94,4 +94,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default Account;
